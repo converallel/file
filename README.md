@@ -1,4 +1,4 @@
-# SCC - [Project Title]
+# File Server
 
 [Insert one Paragraph of project description]
 
