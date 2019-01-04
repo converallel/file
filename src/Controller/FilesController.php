@@ -79,10 +79,9 @@ class FilesController extends AppController
             unset($postData[$file_key], $file_data[$blobName]);
             $postData[] = array_merge($file_data, [
                 'user_id' => $this->current_user->id,
-                'server' => $_SERVER['HTTP_HOST'],
-                'directory' => str_ireplace(FILES, '', $file->Folder->path),
-                'name' => $file->name(),
-                'extension' => $file->ext(),
+                'url' => 'http://' . $request->host() . '/' . str_ireplace(FILES, '',
+                        $file->Folder->path) . '/' . $file->name() . '.' . $file->ext(),
+                'mime_type' => $file->mime(),
                 'size' => $file->size()
             ]);
         }
@@ -105,7 +104,7 @@ class FilesController extends AppController
 
         // set response
         $data = json_decode($postResponse->getBody()->getContents(), true);
-        if (count($data) === 1) {
+        if (count($data) === 1 && array_key_exists(0, $data)) {
             $data = $data[0];
         }
         $this->set(array_merge($data, ['_serialize' => array_keys($data)]));
